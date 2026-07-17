@@ -5,13 +5,18 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Advisor {
 
     @Id
     @GeneratedValue()
-    private long advisorId;
+    @Column(unique = true, nullable = false)
+    private Long advisorId;
 
     @Column(nullable = false)
     private String firstName;
@@ -28,11 +33,15 @@ public class Advisor {
     @Column(nullable = false)
     private String email;
 
+    @OneToMany(mappedBy = "advisor")
+    private List<Client> clients;
+
     protected Advisor() {
 
     }
 
     public Advisor(String firstName, String lastName, String address, String phone, String email) {
+        this.clients = new ArrayList<>();
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -83,4 +92,8 @@ public class Advisor {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public List<Client> getClients() { return clients; }
+
+    public void setClients(List<Client> clients) { this.clients = clients; }
 }
